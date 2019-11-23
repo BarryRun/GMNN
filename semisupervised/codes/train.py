@@ -183,7 +183,7 @@ def update_q_data():
     # inputs_p会更新，但是inputs_q不会更新
     preds = trainer_p.predict(inputs_p)
     # print(preds.shape) ==> torch.Size([2708, 7])
-    # 将p的预测结果作为target_q来进行训练
+    # 将p的预测结果的概率分布作为target_q来进行训练
     target_q.copy_(preds)
     # 标注好仍为原有的label
     if opt['use_gold'] == 1:
@@ -215,8 +215,9 @@ def pre_train(epoches):
     return results
 
 
+# 对应论文中learning过程，也就是EM的M步
 def train_p(epoches):
-    # 对所有的结点进行预测，更新input_p与target_p
+    # 对所有的结点进行预测，更新input_p与target_p（由于该步是由label预测label，所以两者相同）
     # 也就是求隐变量（未标注变量）的概率分布
     update_p_data()
     results = []
@@ -231,8 +232,9 @@ def train_p(epoches):
     return results
 
 
+# 对应论文中inference过程，也就是EM的E步
 def train_q(epoches):
-    # 根据GNNp的预测结果更新target_q
+    # 根据GNNp的预测结果更新target_q（此处target_q不同于p，是一个概率分布）
     update_q_data()
     results = []
     # 利用更新过的target_q重新训练GNNq
