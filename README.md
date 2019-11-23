@@ -1,4 +1,6 @@
 # GMNN
+>在原代码的基础上添加了大量中文注释
+
 This is an implementation of the [GMNN (Graph Markov Neural Networks)](https://arxiv.org/abs/1905.06214) model.
 
 Table of Contents
